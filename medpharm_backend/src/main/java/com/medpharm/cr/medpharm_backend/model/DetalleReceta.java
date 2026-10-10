@@ -9,12 +9,14 @@ public class DetalleReceta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Relación Muchos a Uno: Muchos detalles (renglones) pertenecen a una misma Receta
+    // Relación Muchos a Uno: Muchos detalles (renglones) pertenecen a una misma
+    // Receta
     @ManyToOne
     @JoinColumn(name = "receta_id", nullable = false)
     private RecetaMedica receta;
 
-    // Relación Muchos a Uno: Un detalle hace referencia a un Medicamento del catálogo
+    // Relación Muchos a Uno: Un detalle hace referencia a un Medicamento del
+    // catálogo
     @ManyToOne
     @JoinColumn(name = "medicamento_id", nullable = false)
     private Medicamento medicamento;
@@ -27,8 +29,6 @@ public class DetalleReceta {
 
     public DetalleReceta() {
     }
-
-    // --- GETTERS Y SETTERS ---
 
     public Long getId() {
         return id;

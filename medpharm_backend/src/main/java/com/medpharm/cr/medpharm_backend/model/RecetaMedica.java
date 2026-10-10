@@ -1,12 +1,16 @@
 package com.medpharm.cr.medpharm_backend.model;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @Entity
 public class RecetaMedica {
+
+    static final String[] allowedStates = { "PENDIENTE", "DESPACHADA", "CANCELADA" };
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,19 +34,13 @@ public class RecetaMedica {
     @Column(nullable = false)
     private LocalDateTime fechaEmision;
 
-    // Relación Uno a Muchos: Una receta tiene muchos renglones (Detalles)
-    // El "mappedBy" le dice a JPA que la relación ya está definida en DetalleReceta
-    // por la variable "receta"
     @OneToMany(mappedBy = "receta", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetalleReceta> detalles = new ArrayList<>();
 
     public RecetaMedica() {
-        // Inicializamos la fecha y el estado por defecto al crear una receta nueva
         this.fechaEmision = LocalDateTime.now();
         this.estado = "PENDIENTE";
     }
-
-    // --- GETTERS Y SETTERS ---
 
     public Long getId() {
         return id;
@@ -82,12 +80,10 @@ public class RecetaMedica {
 
     public void setEstado(String estado) {
         // Validación rápida para los estados permitidos
-        if (estado != null
-                && (estado.equals("PENDIENTE") || estado.equals("DESPACHADA") || estado.equals("CANCELADA"))) {
-            this.estado = estado;
-        } else {
-            throw new IllegalArgumentException("Estado inválido para la receta");
-        }
+        if (estado.trim() == "" || estado == null || !Arrays.asList(allowedStates).contains(estado.toUpperCase()))
+            throw new IllegalArgumentException("El estado ingresado no es valido para la receta");
+
+        this.estado = estado;
     }
 
     public LocalDateTime getFechaEmision() {
