@@ -3,10 +3,10 @@
 
 -- Insertar Usuarios Iniciales
 -- Nota: La contraseña en texto plano para testing es 'password123'
--- Hash BCrypt de 'password123': $2a$10$e8XWfC.y47b5s7j3zK9t.O0E/4m4l6/P5K9V8/Z.6g2R1
+-- Hash BCrypt de 'password123': $2a$10$YGXhfvHE/TfUlfKo6DzqBOsTB4Ck4SlV.t5TjI7JVhSmoXeIlRf9.
 INSERT INTO usuario (username, password, nombre_completo, rol) VALUES 
-('medico1', '$2a$10$e8XWfC.y47b5s7j3zK9t.O0E/4m4l6/P5K9V8/Z.6g2R1', 'Dr. Esteban Soto Vargas', 'MEDICO'),
-('farma1', '$2a$10$e8XWfC.y47b5s7j3zK9t.O0E/4m4l6/P5K9V8/Z.6g2R1', 'Dra. Lucia Ramirez Solis', 'FARMACEUTICO');
+('medico1', '$2a$10$YGXhfvHE/TfUlfKo6DzqBOsTB4Ck4SlV.t5TjI7JVhSmoXeIlRf9.', 'Dr. Esteban Soto Vargas', 'MEDICO'),
+('farma1', '$2a$10$YGXhfvHE/TfUlfKo6DzqBOsTB4Ck4SlV.t5TjI7JVhSmoXeIlRf9.', 'Dra. Lucia Ramirez Solis', 'FARMACEUTICO');
 
 -- Insertar Medicamentos en Catálogo
 INSERT INTO medicamento (codigo, nombre, stock, precio_unitario) VALUES 
