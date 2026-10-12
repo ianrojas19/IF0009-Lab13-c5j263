@@ -21,6 +21,7 @@ public class Usuario {
     private String username;
 
     @Column(nullable = false)
+    @com.fasterxml.jackson.annotation.JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(name = "nombre_completo", nullable = false)

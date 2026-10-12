@@ -13,6 +13,7 @@ public class DetalleReceta {
     // Receta
     @ManyToOne
     @JoinColumn(name = "receta_id", nullable = false)
+    @com.fasterxml.jackson.annotation.JsonIgnore
     private RecetaMedica receta;
 
     // Relación Muchos a Uno: Un detalle hace referencia a un Medicamento del
