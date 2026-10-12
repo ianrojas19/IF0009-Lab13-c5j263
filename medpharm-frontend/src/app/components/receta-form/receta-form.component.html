@@ -1,0 +1,216 @@
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <!-- Breadcrumb / Regresar -->
+      <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/recetas">Recetas</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Nueva Receta Digital</li>
+        </ol>
+      </nav>
+
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white py-3">
+          <h4 class="mb-0 fw-bold">
+            <i class="bi bi-file-earmark-medical me-2"></i>Emitir Receta Médica Digital
+          </h4>
+          <small class="text-white-50">Complete los datos del paciente y los medicamentos prescritos</small>
+        </div>
+
+        <div class="card-body p-4">
+          @if (errorMensaje()) {
+            <div class="alert alert-danger d-flex align-items-center mb-4" role="alert">
+              <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
+              <div>{{ errorMensaje() }}</div>
+            </div>
+          }
+
+          <form [formGroup]="recetaForm" (ngSubmit)="onSubmit()" novalidate>
+            <!-- Datos del Paciente -->
+            <div class="card bg-light border-0 mb-4">
+              <div class="card-body">
+                <h5 class="card-title text-secondary mb-3">
+                  <i class="bi bi-person-vcard me-2"></i>Información del Paciente
+                </h5>
+                <div class="mb-2">
+                  <label for="pacienteNombre" class="form-label fw-semibold">
+                    Nombre Completo del Paciente <span class="text-danger">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="pacienteNombre"
+                    class="form-control"
+                    formControlName="pacienteNombre"
+                    placeholder="Ej: Mariana Fallas Cordero (mínimo 5 caracteres)"
+                    [class.is-invalid]="
+                      recetaForm.get('pacienteNombre')?.touched &&
+                      recetaForm.get('pacienteNombre')?.invalid
+                    "
+                  />
+                  @if (
+                    recetaForm.get('pacienteNombre')?.touched &&
+                    recetaForm.get('pacienteNombre')?.hasError('required')
+                  ) {
+                    <div class="text-danger small mt-1">El nombre del paciente es requerido.</div>
+                  }
+                  @if (
+                    recetaForm.get('pacienteNombre')?.touched &&
+                    recetaForm.get('pacienteNombre')?.hasError('minlength')
+                  ) {
+                    <div class="text-danger small mt-1">
+                      El nombre debe contener al menos 5 caracteres.
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <!-- FormArray de Medicamentos -->
+            <div class="mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0 fw-bold text-secondary">
+                  <i class="bi bi-capsule me-2"></i>Medicamentos Prescritos
+                </h5>
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-primary"
+                  (click)="agregarRenglon()"
+                >
+                  <i class="bi bi-plus-lg me-1"></i> Agregar Medicamento
+                </button>
+              </div>
+
+              <div formArrayName="detalles">
+                @for (renglon of detalles.controls; track $index) {
+                  <div [formGroupName]="$index" class="card mb-3 border">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center py-2">
+                      <span class="fw-semibold text-primary">
+                        <i class="bi bi-prescription2 me-1"></i>Medicamento #{{ $index + 1 }}
+                      </span>
+                      @if (detalles.length > 1) {
+                        <button
+                          type="button"
+                          class="btn btn-sm btn-outline-danger py-0 px-2"
+                          (click)="eliminarRenglon($index)"
+                          title="Eliminar este medicamento"
+                        >
+                          <i class="bi bi-trash"></i> Quitar
+                        </button>
+                      }
+                    </div>
+                    <div class="card-body">
+                      <div class="row g-3">
+                        <!-- Selector de Medicamento -->
+                        <div class="col-md-6">
+                          <label class="form-label fw-semibold">
+                            Medicamento <span class="text-danger">*</span>
+                          </label>
+                          <select
+                            class="form-select"
+                            formControlName="medicamentoId"
+                            [class.is-invalid]="
+                              renglon.get('medicamentoId')?.touched &&
+                              renglon.get('medicamentoId')?.invalid
+                            "
+                          >
+                            <option value="" disabled selected>-- Seleccione un medicamento --</option>
+                            @for (med of medicamentos(); track med.id) {
+                              <option [value]="med.id">
+                                {{ med.nombre }} (Stock: {{ med.stock }} | ₡{{ med.precioUnitario }})
+                              </option>
+                            }
+                          </select>
+                          @if (
+                            renglon.get('medicamentoId')?.touched &&
+                            renglon.get('medicamentoId')?.hasError('required')
+                          ) {
+                            <div class="text-danger small mt-1">Debe seleccionar un medicamento.</div>
+                          }
+                        </div>
+
+                        <!-- Cantidad con validador positivoValidator -->
+                        <div class="col-md-3">
+                          <label class="form-label fw-semibold">
+                            Cantidad <span class="text-danger">*</span>
+                          </label>
+                          <input
+                            type="number"
+                            min="1"
+                            step="1"
+                            class="form-control"
+                            formControlName="cantidad"
+                            placeholder="Ej: 10"
+                            [class.is-invalid]="
+                              renglon.get('cantidad')?.touched &&
+                              renglon.get('cantidad')?.invalid
+                            "
+                          />
+                          @if (
+                            renglon.get('cantidad')?.touched &&
+                            renglon.get('cantidad')?.hasError('required')
+                          ) {
+                            <div class="text-danger small mt-1">La cantidad es requerida.</div>
+                          }
+                          @if (
+                            renglon.get('cantidad')?.touched &&
+                            renglon.get('cantidad')?.hasError('positivoInvalido')
+                          ) {
+                            <div class="text-danger small mt-1">
+                              Debe ser un entero mayor a 0.
+                            </div>
+                          }
+                        </div>
+
+                        <!-- Dosis Indicada -->
+                        <div class="col-md-12">
+                          <label class="form-label fw-semibold">
+                            Dosis e Indicaciones <span class="text-danger">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            formControlName="dosisIndicada"
+                            placeholder="Ej: 1 tableta cada 8 horas con las comidas por 5 días"
+                            [class.is-invalid]="
+                              renglon.get('dosisIndicada')?.touched &&
+                              renglon.get('dosisIndicada')?.invalid
+                            "
+                          />
+                          @if (
+                            renglon.get('dosisIndicada')?.touched &&
+                            renglon.get('dosisIndicada')?.hasError('required')
+                          ) {
+                            <div class="text-danger small mt-1">La dosis es requerida.</div>
+                          }
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <!-- Botones de Acción -->
+            <div class="d-flex justify-content-end gap-2 pt-3 border-top">
+              <a routerLink="/recetas" class="btn btn-outline-secondary px-4">
+                Cancelar
+              </a>
+              <button
+                type="submit"
+                class="btn btn-primary px-4 fw-semibold"
+                [disabled]="guardando()"
+              >
+                @if (guardando()) {
+                  <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                  Guardando Receta...
+                } @else {
+                  <i class="bi bi-check2-circle me-1"></i> Emitir Receta
+                }
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

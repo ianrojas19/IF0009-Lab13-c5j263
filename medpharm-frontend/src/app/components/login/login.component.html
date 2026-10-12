@@ -1,0 +1,98 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white text-center py-3">
+          <h4 class="mb-0 fw-bold"><i class="bi bi-hospital me-2"></i>MedPharm Express</h4>
+          <small class="text-white-50">Sistema Hospitalario de Recetas y Farmacia</small>
+        </div>
+        <div class="card-body p-4">
+          <h5 class="card-title text-center mb-4">Iniciar Sesión</h5>
+
+          @if (errorMensaje()) {
+            <div class="alert alert-danger d-flex align-items-center" role="alert">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>
+              <div>{{ errorMensaje() }}</div>
+            </div>
+          }
+
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+            <div class="mb-3">
+              <label for="username" class="form-label fw-semibold">Nombre de Usuario</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-person"></i></span>
+                <input
+                  type="text"
+                  id="username"
+                  class="form-control"
+                  formControlName="username"
+                  placeholder="Ej: medico1 o farma1"
+                  [class.is-invalid]="loginForm.get('username')?.touched && loginForm.get('username')?.invalid"
+                />
+              </div>
+              @if (loginForm.get('username')?.touched && loginForm.get('username')?.hasError('required')) {
+                <div class="text-danger small mt-1">El usuario es requerido.</div>
+              }
+            </div>
+
+            <div class="mb-4">
+              <label for="password" class="form-label fw-semibold">Contraseña</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                <input
+                  type="password"
+                  id="password"
+                  class="form-control"
+                  formControlName="password"
+                  placeholder="Mínimo 6 caracteres"
+                  [class.is-invalid]="loginForm.get('password')?.touched && loginForm.get('password')?.invalid"
+                />
+              </div>
+              @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('required')) {
+                <div class="text-danger small mt-1">La contraseña es requerida.</div>
+              }
+              @if (loginForm.get('password')?.touched && loginForm.get('password')?.hasError('minlength')) {
+                <div class="text-danger small mt-1">La contraseña debe tener al menos 6 caracteres.</div>
+              }
+            </div>
+
+            <button
+              type="submit"
+              class="btn btn-primary w-100 py-2 fw-semibold"
+              [disabled]="cargando()"
+            >
+              @if (cargando()) {
+                <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                Autenticando...
+              } @else {
+                <i class="bi bi-box-arrow-in-right me-1"></i> Entrar al Sistema
+              }
+            </button>
+          </form>
+
+          <hr class="my-4" />
+
+          <div class="text-center">
+            <span class="text-muted small d-block mb-2">Accesos rápidos de prueba:</span>
+            <div class="d-flex justify-content-center gap-2">
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-info"
+                (click)="cargarCredenciales('medico1')"
+              >
+                <i class="bi bi-person-badge me-1"></i> Médico (medico1)
+              </button>
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-secondary"
+                (click)="cargarCredenciales('farma1')"
+              >
+                <i class="bi bi-capsule me-1"></i> Farmacéutico (farma1)
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
