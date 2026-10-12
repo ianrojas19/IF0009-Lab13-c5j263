@@ -45,9 +45,12 @@ export class RecetasListComponent implements OnInit {
       },
       error: (err) => {
         this.cargando.set(false);
+        const detalle = typeof err.error === 'string'
+          ? err.error
+          : (err.error?.message || err.statusText || 'Error de conexión');
         this.mensaje.set({
           tipo: 'danger',
-          texto: 'Error al cargar las recetas: ' + (err.error || err.message)
+          texto: `Error al cargar las recetas (${err.status || 'Red'}): ${detalle}`
         });
       }
     });
