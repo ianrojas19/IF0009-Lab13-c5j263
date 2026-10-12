@@ -1,11 +1,13 @@
 # MedPharm Express - Laboratorio 13
+**Estudiante:** Ian Gabriel Rojas Sequeira  
+**Carné:** C5J263  
 **Curso:** IF0009 - Desarrollo de Software IV  
 **Institución:** Universidad de Costa Rica - Sede del Atlántico (Recinto Paraíso)  
 **Semestre:** II-2026  
 
 ---
 
-## 📋 Descripción del Sistema
+## Descripción del Sistema
 **MedPharm Express** es una plataforma integral Full-Stack diseñada para la automatización hospitalaria en la emisión de recetas médicas digitales y el despacho de medicamentos en farmacia.
 
 El sistema implementa una arquitectura desacoplada:
@@ -14,7 +16,7 @@ El sistema implementa una arquitectura desacoplada:
 
 ---
 
-## 🛠️ Tecnologías Utilizadas
+## Tecnologías Utilizadas
 
 ### Backend (`medpharm_backend`)
 - **Java 17 / 21**
@@ -37,7 +39,7 @@ El sistema implementa una arquitectura desacoplada:
 
 ---
 
-## 👥 Credenciales de Prueba Preconfiguradas
+## Credenciales de Prueba Preconfiguradas
 
 Los datos semilla se cargan automáticamente desde `src/main/resources/data.sql`:
 
@@ -48,7 +50,7 @@ Los datos semilla se cargan automáticamente desde `src/main/resources/data.sql`
 
 ---
 
-## 🚀 Guía de Ejecución
+## Guía de Ejecución
 
 ### 1. Ejecutar el Servidor Back-End
 Abra una terminal en la carpeta `medpharm_backend`:
@@ -72,7 +74,7 @@ npm start
 
 ---
 
-## 🔬 Parte 3: Informe de Análisis y Depuración de Errores
+## Parte 3: Informe de Análisis y Depuración de Errores
 
 ### 1. Evidencia Gráfica del Rechazo HTTP (Sin Interceptor)
 A continuación se presenta la evidencia capturada durante la prueba de depuración requerida por la rúbrica:
@@ -135,7 +137,7 @@ export const appConfig: ApplicationConfig = {
 
 ---
 
-## 📑 Endpoints de la API RESTful
+## Endpoints de la API RESTful
 
 | Método | Endpoint | Roles Permitidos | Descripción |
 | :--- | :--- | :--- | :--- |
@@ -148,7 +150,7 @@ export const appConfig: ApplicationConfig = {
 
 ---
 
-## 🧩 Características del Front-End Angular
+## Características del Front-End Angular
 
 1. **Signals y Computeds:**
    - La lista de recetas se almacena en `recetas = signal<RecetaMedica[]>([])`.
