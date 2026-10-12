@@ -46,6 +46,15 @@ public class RecetaService {
                 .orElseThrow(() -> new RuntimeException("Médico no encontrado"));
 
         receta.setMedico(medico);
+        if (receta.getCodigoReceta() == null || receta.getCodigoReceta().isBlank()) {
+            receta.setCodigoReceta("REC-" + System.currentTimeMillis());
+        }
+        if (receta.getEstado() == null || receta.getEstado().isBlank()) {
+            receta.setEstado("PENDIENTE");
+        }
+        if (receta.getFechaEmision() == null) {
+            receta.setFechaEmision(java.time.LocalDateTime.now());
+        }
 
         for (DetalleReceta detalle : receta.getDetalles()) {
             Medicamento medicamentoDB = medicamentoRepository.findById(detalle.getMedicamento().getId())
